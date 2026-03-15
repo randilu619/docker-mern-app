@@ -1,0 +1,24 @@
+services:
+  server:
+    build: ./server
+    container_name: api_container
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules  # <--- THIS IS CRITICAL
+    environment:
+      - NODE_ENV=development
+
+  client:
+    build: ./client
+    container_name: client_container
+    ports:
+      - "5175:5175"
+    depends_on:
+      - server
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./client:/app
+      - /app/node_modules  # <--- THIS IS CRITICAL
